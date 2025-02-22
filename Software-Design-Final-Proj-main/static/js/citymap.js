@@ -1,0 +1,102 @@
+const provinceCityMap = {
+    "Abra": ["Bangued"],
+    "Agusan del Norte": ["Butuan", "Cabadbaran"],
+    "Agusan del Sur": ["Bayugan", "Prosperidad"],
+    "Aklan": ["Kalibo"],
+    "Albay": ["Legazpi", "Ligao"],
+    "Antique": ["San Jose"],
+    "Apayao": ["Kabugao"],
+    "Aurora": ["Baler"],
+    "Basilan": ["Isabela City"],
+    "Bataan": ["Balanga"],
+    "Batanes": ["Basco"],
+    "Batangas": ["Batangas City", "Lipa", "Tanauan"],
+    "Benguet": ["Baguio"],
+    "Biliran": ["Naval"],
+    "Bohol": ["Tagbilaran"],
+    "Bukidnon": ["Malaybalay"],
+    "Bulacan": ["Malolos"],
+    "Cagayan": ["Tuguegarao"],
+    "Camarines Norte": ["Daet"],
+    "Camarines Sur": ["Naga", "Iriga"],
+    "Camiguin": ["Mambajao"],
+    "Capiz": ["Roxas"],
+    "Catanduanes": ["Virac"],
+    "Cavite": ["Cavite City", "Dasmariñas", "General Trias", "Tagaytay", "Trece Martires"],
+    "Cebu": ["Cebu City", "Carcar", "Danao", "Lapu-Lapu City", "Mandaue", "Naga", "Talisay"],
+    "Cotabato": ["Kidapawan"],
+    "Davao de Oro": ["Nabunturan"],
+    "Davao del Norte": ["Tagum"],
+    "Davao del Sur": ["Davao City", "Digos"],
+    "Davao Occidental": ["Malita"],
+    "Davao Oriental": ["Mati"],
+    "Dinagat Islands": ["San Jose"],
+    "Eastern Samar": ["Borongan"],
+    "Guimaras": ["Jordan"],
+    "Ifugao": ["Lagawe"],
+    "Ilocos Norte": ["Laoag"],
+    "Ilocos Sur": ["Vigan"],
+    "Iloilo": ["Iloilo City", "Passi"],
+    "Isabela": ["Ilagan", "Cauayan", "Santiago", "Tabuk"],
+    "Kalinga": ["Tabuk"],
+    "La Union": ["San Fernando"],
+    "Laguna": ["Calamba", "San Pablo", "San Pedro", "Santa Rosa"],
+    "Lanao del Norte": ["Iligan"],
+    "Lanao del Sur": ["Marawi"],
+    "Leyte": ["Baybay", "Ormoc", "Tacloban"],
+    "Maguindanao del Norte": ["Maguindanao"],
+    "Maguindanao del Sur": ["Shariff Aguak"],
+    "Marinduque": ["Boac"],
+    "Masbate": ["Masbate City"],
+    "Misamis Occidental": ["Oroquieta"],
+    "Misamis Oriental": ["Cagayan de Oro", "Gingoog"],
+    "Mountain Province": ["Bontoc"],
+    "Negros Occidental": ["Bacolod", "Bago", "Cadiz", "La Carlota", "Sagay", "San Carlos", "Silay", "Sipalay", "Talisay", "Victorias"],
+    "Negros Oriental": ["Bais", "Bayawan", "Dumaguete", "Guihulngan", "Tanjay"],
+    "Northern Samar": ["Catarman"],
+    "Nueva Ecija": ["Cabanatuan", "Gapan", "Muñoz", "Palayan", "San Jose"],
+    "Nueva Vizcaya": ["Bayombong"],
+    "Occidental Mindoro": ["Mamburao"],
+    "Oriental Mindoro": ["Calapan", "Roxas"],
+    "Palawan": ["Puerto Princesa"],
+    "Pampanga": ["Angeles City", "San Fernando"],
+    "Pangasinan": ["Dagupan", "San Carlos", "Urdaneta"],
+    "Quezon": ["Lucena", "Tayabas"],
+    "Quirino": ["Cabarroguis"],
+    "Rizal": ["Antipolo", "Rodriguez", "San Mateo", "Taytay"],
+    "Romblon": ["Odiongan"],
+    "Samar": ["Calbayog", "Catbalogan"],
+    "Sarangani": ["Alabel"],
+    "Siquijor": ["Siquijor"],
+    "Sorsogon": ["Sorsogon City"],
+    "South Cotabato": ["Koronadal"],
+    "Southern Leyte": ["Maasin"],
+    "Sultan Kudarat": ["Isulan", "Tacurong"],
+    "Sulu": ["Jolo"],
+    "Surigao del Norte": ["Surigao City"],
+    "Surigao del Sur": ["Tandag"],
+    "Tarlac": ["Tarlac City"],
+    "Tawi-Tawi": ["Bongao"],
+    "Zambales": ["Olongapo"],
+    "Zamboanga del Norte": ["Dapitan", "Dipolog"],
+    "Zamboanga del Sur": ["Pagadian", "Zamboanga City"],
+    "Zamboanga Sibugay": ["Ipil"],
+    "Hamilton" : ["Hamilton"],
+    "Metro Manila": ["Caloocan", "Las Piñas", "Makati", "Malabon", "Mandaluyong", "Manila", "Marikina", "Muntinlupa", "Navotas", "Parañaque", "Pasay", "Pasig", "Quezon City", "San Juan", "Taguig", "Valenzuela"]
+};
+
+function updateCities(province) {
+    const citySelect = document.getElementById("city");
+    const cities = provinceCityMap[province] || [];
+
+    // Clear existing options
+    citySelect.innerHTML = "";
+
+    // Add new options based on selected province
+    cities.forEach(city => {
+        const option = document.createElement("option");
+        option.value = city;
+        option.text = city;
+        citySelect.add(option);
+    });
+}

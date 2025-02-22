@@ -1,0 +1,629 @@
+{% extends 'base.html'%}
+{% block title %}
+Car Info
+{% endblock %}
+
+{% block content%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Card</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='../css/rentModal.css') }}">
+</head>
+<body>
+<div class="main">
+    <div class="mainWrapper">
+        <div class="mainBackground clearfix">
+            <div class="row">
+                <div class="column small-centered">
+                    <div class="productCard_block">
+                        <div class="row">
+                            <div class="small-12 large-6 columns">
+                                <div class="productCard_leftSide clearfix">
+                                    <div class="productCard_brendBlock">
+                                        <a class="productCard_brendBlock__imageBlock" href="#">
+                                            <img src="{{ url_for('static', filename='images/logo-horizontal.png')}}" alt="sennheiser">
+                                        </a>
+                                    </div>
+
+                                    <div class="sliderBlock">
+                                        <ul class="sliderBlock_items">
+                                                <img src="{{ car.icon }}"  alt="{{car.carMake}}">   
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="small-12 large-6 columns">
+                                <div class="productCard_rightSide">
+                                    <div class="block_specification">
+                                        <div class="block_specification__specificationShow">
+                                            <i class="fa fa-cog block_specification__button block_specification__button__rotate"
+                                               aria-hidden="true"></i>
+                                            <span class="block_specification__text">spec</span>
+                                        </div>
+                                        <div class="block_specification__informationShow hide">
+                                            <i class="fa fa-info-circle block_specification__button block_specification__button__jump"
+                                               aria-hidden="true"></i>
+                                            <span class="block_specification__text">inform</span>
+                                        </div>
+                                    </div>
+
+                                    <p class="block_model">
+                                        <span class="block_model__text">Model: </span>
+                                        <span class="block_model__number">{{car.carModel}}</span>
+                                    </p>
+
+                                    <div class="block_product">
+                                        <h2 class="block_name block_name__mainName">{{ car.carMake }} {{ car.carModel }}<sup>&reg; </sup></h2>
+                                        <h2 class="block_name block_name__addName">{{ car_class.type }}</h2>
+
+                                        <!-- <p class="block_product__advantagesProduct">
+                                            Wireless headphones with integrated microphone
+                                        </p> -->
+
+                                        <div class="block_informationAboutDevice">
+
+                                            <div class="block_descriptionCharacteristic block_descriptionCharacteristic__disActive">
+                                                <table class="block_specificationInformation_table">
+                                                    <tr>
+                                                        <th>Characteristic</th>
+                                                        <th>Value</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Car ID</td>
+                                                        <td>{{car.carID}}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>License Plate</td>
+                                                        <td>{{ car.licensePlate }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Car Make</td>
+                                                      <td>{{ car.carMake }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Car Model</td>
+                                                      <td>{{ car.carModel }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Year Made</td>
+                                                      <td>{{ car.yearMade }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Car Color</td>
+                                                      <td>{{ car.carColor }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>One Week Price</td>
+                                                      <td>₱ {{ car_class.oneWeekPrice }}.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Two Weeks Price</td>
+                                                      <td>₱ {{ car_class.twoWeekPrice }}.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>One Month Price</td>
+                                                      <td>₱ {{ car_class.oneMonthPrice }}.00</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+
+
+                                            <div class="block_descriptionInformation">
+                                                <span>Discover the {{ car.carMake }} {{ car.carModel }}: where luxury meets performance.
+                                                   With its sleek design, advanced technology, and powerful engine, this car delivers an unparalleled driving experience. 
+                                                   Whether you're cruising through city streets or embarking on a cross-country adventure, the {{ car.carMake }} {{ car.carModel }} ensures you arrive in style, comfort, and confidence. 
+                                                   Elevate your journey today.
+                                            </div>
+
+                                            <div class="row row_below ">
+                                                <div class="large-6 small-12 column left-align">
+                                                    <div class="block_price">
+                                                        <p class="block_price__currency">₱ {{ car_class.price }}.00</p>
+                                                        <p class="block_price__shipping">Price per day</p>
+                                                    </div>
+                                                    
+                                                    <a class="large-6 small-12 column end" data-toggle="modal" data-target="#rent-modal" data-backdrop="static">
+                                                      <button class="button button_addToCard">Rent Now</button>
+                                                    </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> 
+    </div>
+</div>
+
+<!-- Rent Modal -->
+<div id="rent-modal" class="modal" style="position: fixed; top: 100px; left:400px">
+  <div class="container">
+    <style>
+      .rent-modal body {
+        font-family: "Roboto", sans-serif;
+        padding: 0px;
+        margin: 0px;
+        background-color: #f5f5f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+      }
+      
+      .cookiesContent {
+        width: 320px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #fff;
+        color: #000;
+        text-align: center;
+        border-radius: 20px;
+        padding: 5px 30px 70px;
+        button.close {
+          width: 30px;
+          font-size: 20px;
+          color: #c0c5cb;
+          align-self: flex-end;
+          background-color: transparent;
+          border: none;
+          margin-bottom: 10px;
+        }
+        img {
+          width: 82px;
+          margin-bottom: 0px;
+        }
+        p {
+          margin-bottom: 40px;
+          font-size: 18px;
+        }
+        b {
+          margin-top: 10px;
+          font-size: 25px;
+          color: #30507D;
+        }
+        button.accept {
+          background-color: #C8081D;
+          border: none;
+          border-radius: 5px;
+          width: 200px;
+          padding: 14px;
+          font-size: 16px;
+          color: white;
+          box-shadow: 0px 6px 18px -5px #C8081D;
+        }
+      }
+    </style>
+    <div class="cookiesContent" id="cookiesPopup">
+      <b>Car Rented!</b>
+      <img src="https://img.pikbest.com/png-images/20190917/purple-cartoon-car-launch-gif_2515083.png!sw800" alt="car-img" />
+      <p>To complete rental, process the car return. Please fill up this rental form</p>
+      <a href="{{ url_for('registerRent', car_id=car.carID) }}">
+        <button class="accept">Continue</button>
+      </a>    
+    </div>
+  </div>
+</div>
+
+
+</body>
+    <style>
+    @import url('https://fonts.googleapis.com/css?family=Titillium+Web');
+    @import url('https://fonts.googleapis.com/css?family=Roboto|Roboto+Slab');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/foundation/6.3.1/css/foundation.min.css');
+    @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css');
+    body {
+    overflow: hidden; /* Hide both vertical and horizontal scrollbars */
+    height: 100vh; /* Set the height to 100% of the viewport height */
+    font-family: Gill Sans, Gill Sans MT, Calibri, Trebuchet MS, sans-serif;
+    }
+    .main {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh; /* Ensure the content takes up at least the full height of the viewport */
+    }
+    img {
+    width: auto;
+    height: 70px; 
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+    padding: 0; 
+  }
+    .main img {
+    min-width: 90%;
+    max-width: 100%;
+    height: auto;
+    padding: 5%;
+    top: 50px;
+    position: relative;
+    }
+    
+    .main ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none !important;
+    }
+    
+    .main a {
+      text-decoration: none;
+      color: black;
+    }
+    .main a:hover, .main a:focus, .main a:active {
+      text-decoration: none;
+      color: black;
+    }
+    
+    .main input,
+    .main input:focus,
+    .main input:active {
+      outline: none;
+    }
+    
+    .main button,
+    .main button:active,
+    .main button:focus,
+    .main button:hover {
+      outline: none;
+    }
+    
+    .main button {
+      padding: 0;
+      margin: 0;
+      background-color: transparent;
+      color: #000;
+    }
+    
+    .main .mainWrapper {
+      position: relative;
+      width: 100%;
+      min-width: 320px;
+      min-height: 900px;
+      padding: 0;
+      margin: 0 !important;
+      background: repeating-radial-gradient(rgb(48, 61, 85), rgb(47, 51, 82));
+    }
+    
+    .main .wrappen_block {
+      position: relative;
+      width: 100%;
+      height: 100%;
+    }
+    
+    .mainBackground {
+      width: 100%;
+      min-height: 1000px;
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url('../static/images/main.jpeg') no-repeat center/cover !important;
+    } 
+    
+    .main .productCard_block {
+    position: relative;
+    margin: 60px auto 0;
+    max-width: auto;
+    min-height: 100px;
+    box-shadow: 0 5px 21px rgba(196, 196, 196, 0.08);
+    background-color: #fff;
+    }
+    
+    /* LEFT SIDE */
+    .main .productCard_leftSide {
+      position: relative;
+      width: 100%;
+      min-height: 600px;
+    }
+    
+    .main .productCard_brendBlock {
+      width: 100%;
+      height: 75px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      max-width: 184px;
+      max-height: 75px;
+      background-color: #ffffff;
+      z-index: 2;
+    }
+    .main .productCard_brendBlock__imageBlock {
+      display: block;
+      height: 100%;
+    }
+    .main .productCard_brendBlock__imageBlock img {
+      position: absolute;
+      display: block;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    
+    .main .sliderBlock {
+        position: relative;
+        height: 100%;
+        margin-left: 50px;
+        margin-top: 89px;
+        margin-bottom: 46px;
+        overflow: hidden;
+    }
+    
+    /*   RIGHT SIDE */
+    .main .productCard_rightSide {
+      position: relative;
+      padding-top: 34px;
+      padding-left: 27px;
+      padding-right: 40px;
+      width: 100%;
+      min-height: 600px;
+    }
+    
+    .main .block_specification {
+      float: right;
+      margin-top: 8px;
+      cursor: pointer;
+      color: #536dfe;
+      transition: all 0.5s;
+    }
+    .main .block_specification__button {
+      display: inline-block;
+      margin-right: 7px;
+      height: 100%;
+      font-size: 25px;
+      text-transform: uppercase;
+      transform: rotate(0);
+      transition: transform 0.5s;
+      transform-origin: center center;
+    }
+    .main .block_specification:hover .block_specification__button__rotate {
+      transition: transform 0.5s;
+      transform: rotate(1turn);
+    }
+    .main .block_specification:hover {
+      color: #f1425d;
+    }
+    
+    .main .block_specification__text {
+      width: 30px;
+      height: 11px;
+      font-family: "Titillium Web", sans-serif;
+      font-size: 25px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    
+    .main .block_model {
+      display: inline-block;
+      color: #263238;
+      font-size: 12px;
+      opacity: 0.9;
+    }
+    
+    .main .block_name {
+      width: 100%;
+      color: #263238;
+      font-weight: 400;
+      line-height: 35px;
+    }
+    .main .block_name__mainName {
+      margin: 0;
+      padding: 0;
+      font-size: 29px;
+    }
+    .main .block_name__addName {
+      margin: 0;
+      padding: 0;
+      font-size: 24px;
+    }
+    
+    .main .block_product {
+      position: relative;
+      width: 100%;
+    }
+    .main .block_product__advantagesProduct {
+      width: 271px;
+      height: 41px;
+      margin-top: 14px;
+      color: #646b6f;
+      font-size: 17px;
+      line-height: 24px;
+    }
+    .main .block_product__link {
+      line-height: 23px;
+      color: #536dfe;
+    }
+    
+    .main .block_informationAboutDevice {
+      position: relative;
+      width: 100%;
+      overflow: hidden;
+    }
+    
+    .main .block_descriptionInformation {
+      width: 450px;
+      height: 120px;
+      margin: 10px auto;
+      padding-top: 40px;
+      padding-bottom: 30%;
+      margin-top: 10px;
+      font-size: 20px;
+      font-weight: 400;
+      line-height: 23px;
+      text-align: left;
+      color: #263238;
+      margin-bottom: 30px;
+      
+    }
+
+    .main .row_below {
+          margin-top: 50px;
+          padding-top: 40px auto;
+          height: 150px;
+          padding-bottom: 50px auto;
+          margin-bottom: 80px;
+          display: flex;
+        }
+
+    
+    .main .block_descriptionCharacteristic {
+      position: absolute;
+      top: 0;
+      left: 100%;
+      width: 100%;
+      height: 100%;
+      z-index: 20;
+      transition: left, ease-out, 0.5s;
+    }
+    .main .block_descriptionCharacteristic__active {
+      left: 0;
+    }
+    
+    @keyframes moveCharackeristic {
+      0% {
+        left: 100%;
+      }
+      100% {
+        left: 0;
+      }
+    }
+    .main .block_specificationInformation_table {
+      position: absolute; 
+      bottom: 0;
+      top: 0;
+      height: 150% auto;
+      background-color: #fff;
+      width: 100%;
+    }
+    .main .block_specificationInformation_table tr {
+      border-collapse: collapse;
+      border: 1px solid #000;
+    }
+    .main .block_specificationInformation_table th {
+      border: 1px solid #000;
+      font-weight: bold;
+    }
+    .main  .block_specificationInformation_table td {
+      border-collapse: collapse;
+      text-align: center;
+      border: 1px solid #000;
+      padding: 5px;
+    }
+    
+    
+    .main fieldset,
+    .main label {
+      margin: 0;
+      padding: 0;
+    }
+    
+    input[type=checkbox] + label,
+    input[type=radio] + label {
+      margin: 0;
+    }
+    
+    
+    .main .block_price {
+      margin-top: 29px;
+      width: 100%;
+    }
+    .main .block_price__currency {
+      padding: 0;
+      margin: 0;
+      vertical-align: top;
+      color: #f1425d;
+      font-size: 26px;
+      font-weight: 600;
+    }
+    .main .block_price__shipping {
+      padding: 0;
+      margin: 0;
+      color: #a2a9ad;
+      font-size: 20px;
+    }
+    
+    .main .radio_button {
+      position: absolute;
+      opacity: 0;
+    }
+    
+    
+    .main .radio_button:checked + .block_goodColor__radio {
+      width: 25px;
+      height: 25px;
+      box-shadow: 0 0 5px 3px rgba(83, 109, 254, 0.5);
+      border: 2px solid #fff;
+    }
+    
+    .main .block_goodColor__black {
+      background-color: #3c383a;
+    }
+    
+    .main .block_goodColor__silver {
+      background-color: silver;
+    }
+    
+    .main .text_specification {
+      padding: 0;
+      color: #37474f;
+      font-size: 13px;
+    }
+    
+    .main .button.button_addToCard {
+      border-radius: 5px;
+      width: 147px;
+      height: 46px;
+      margin-top: 43px;
+      margin-bottom: 30px;
+      padding: 0;
+      color: #fff;
+      background-color: #536dfe;
+      font-size: 17px;
+      transition: all 0.3s;
+      float: right;
+      position: absolute;
+      bottom: 100px;
+      right: 0;
+    }
+    .main .button.button_addToCard:hover {
+      background-color: #0d2660;
+    }
+    
+    .main .aboutMe a {
+      display: block;
+      width: 30%;
+      position: fixed;
+      bottom: 0.1%;
+      left: 20px;
+      color: rgba(255, 255, 255, 0.6);
+      font-size: 1.5em;
+      font-family: "Roboto", sans-serif;
+      text-decoration: none;
+    }
+    </style>
+    
+<script>
+    window.onload = function () {
+        var buttonFullSpecification = document.querySelector(".block_specification");
+        var buttonSpecification = document.querySelector(".block_specification__specificationShow");
+        var buttonInformation = document.querySelector(".block_specification__informationShow");
+
+        var blockCharacteristic = document.querySelector(".block_descriptionCharacteristic");
+
+        if (buttonFullSpecification && buttonSpecification && buttonInformation && blockCharacteristic) {
+            buttonFullSpecification.onclick = function () {
+                console.log("OK");
+                buttonSpecification.classList.toggle("hide");
+                buttonInformation.classList.toggle("hide");
+                blockCharacteristic.classList.toggle("block_descriptionCharacteristic__active");
+            };
+        } else {
+            console.error("One or more elements not found.");
+        }
+    }
+    
+</script>
+</html>
+{% endblock %}

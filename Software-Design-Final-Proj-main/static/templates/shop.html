@@ -1,0 +1,203 @@
+{% extends 'base.html'%}
+{% block title %}
+Shop
+{% endblock %}
+
+{% block content%}
+<html>
+<head>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Product Page</title>
+</head>
+
+<div class="container-fluid">
+  <div class="header justify-content-center">
+    <h1>Car Class: {{ car_type }}</h1>
+  </div>
+
+  <!--Search Bar-->
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <form method="GET" action="{{ url_for('Shop') }}" class="search-form">
+        <div class="search">
+          <input type="text" name="query" placeholder="Search for cars..." class="searchTerm">
+          <button type="submit" class="searchButton">
+            <i class="fa fa-search"></i>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+
+  <br>
+  
+
+<div class ="row justify-content-center">
+<div class="products">
+{% for carInfo in cars %}
+  <div class="product">
+    <span class="product__price">₱ {{ carInfo.price }}/day</span>
+    <img class="product__image" src="{{ carInfo.car.icon }}" alt="{{ carInfo.car.carModel }}">
+    <h1 class="product__title">{{ carInfo.car.carMake }} {{ carInfo.car.carModel }}</h1>
+    <hr/>
+    <p>Color: {{ carInfo.car.carColor }}<br>
+      Year made: {{ carInfo.car.yearMade }}<br>
+      License Plate: {{ carInfo.car.licensePlate }}</p>
+    <a  href="{{ url_for('CarInfo', car_id=carInfo.car.carID) }}" class="product__btn btn">More Info</a>
+  </div>
+{% endfor %} 
+</div>
+</div>
+<script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+</body>
+</div>
+<style>
+  @import url(https://fonts.googleapis.com/css?family=Open+Sans);
+  /* CSS styles */
+  body {
+    font-family: -apple-system, ".SFNSText-Regular", 'Helvetica Neue', sans-serif;
+    line-height: 1.5;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:  #F0F0F0;
+  }
+  .header {
+      top: 0;
+      justify-content: center;
+      text-align: center;
+    }
+  .products {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    padding: 30px;
+  }
+  
+  .product {
+    display: flex;
+    flex-direction: column;
+    align-items: center; 
+    min-width: 270px;
+    width: alc(22% - 50px); /* Adjusted width for three products per row */
+    max-width: calc(22% - 50px); /* Limit the maximum width of each product */
+    position: relative;
+    padding: 30px;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+    margin: 30px;
+    height: 500px;
+  }
+  
+  .product:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 20px -10px rgba(0, 0, 0, 0.3); /* Adjusted box-shadow */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1); /* Smooth transition */
+  }
+  
+  .product__image {
+    position: relative;
+    width: 170%;
+    margin-left: -40%;
+    margin-right: -40%;
+    margin-top: -5px;
+    margin-bottom: 30px;
+    max-width: 500px;
+  }
+  
+  .product__title {
+    font-size: 20px; /* Reduced font size */
+    color: #000000; /* Darker text color */
+    font-weight: 700;
+  }
+  
+  .product__price {
+    position: absolute;
+    top: -20px;
+    left: -20px;
+    width: 85px;
+    height: 85px;
+    background-color: rgba(0, 0, 0, 0.95); /* Black background color */
+    color: #fff; /* White text color */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+  }
+  
+  .product__btn {
+    position: absolute;
+    bottom: -20px;
+    right: 20px;
+    background-color: rgba(207, 9, 44, 0.95); /* Accent color */
+    transition: background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 10px 10px -5px rgba(0, 0, 0, 0.2); /* Darker shadow */
+    color: #fff; /* White text color */
+    text-align: center;
+    padding: 10px 20px; /* Reduced padding */
+    border-radius: 5px;
+    font-size: 0.8em;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .product__btn:hover {
+    background-color: mix(rgba(207, 9, 44, 0.95), #000, 95%);
+    transform: translateY(-5px);
+  }
+
+  .search {
+    width: 100%;
+    position: relative;
+    display: flex;
+  }
+  
+  .searchTerm {
+    width: 100%;
+    border: 3px solid #30507D;
+    border-right: none;
+    padding: 5px;
+    height: 36px;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+    color: #9DBFAF;
+  }
+  
+  .searchTerm:focus{
+    color: #30507D;
+  }
+  
+  .searchButton {
+    width: 80px;
+    height: 36px;
+    border: 1px solid #30507D;
+    background: #30507D;
+    text-align: center;
+    color: #fff;
+    border-radius: 0 5px 5px 0;
+    cursor: pointer;
+    font-size: 20px;
+  }
+  .wrap{
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  
+    </style>
+</html>
+{% endblock %}

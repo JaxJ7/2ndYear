@@ -1,0 +1,219 @@
+{% extends 'base.html'%}
+{% block title %}
+Register Address
+{% endblock %}
+
+{% block content%}
+
+<html lang="en" dir="ltr">
+<body>
+  <div class="container">
+    <div class="title">
+      Registration
+    </div>
+    <div class="content" position:"fixed">
+      <form method="POST" id="address_form" action="{{ url_for('registerAddress') }}">
+        {{ addressForm.hidden_tag() }}
+        <!-- Address Form -->
+
+        <div class="smalltitle">
+          Address
+        </div>
+
+        <div class="user-details">
+            <div class="input-box">
+              <span class="details">Street Name</span>
+              {{ addressForm.streetName(placeholder="Enter your street name") }}
+            </div>
+            <div class="input-box">
+              <span class="details">Street Number</span>
+              {{ addressForm.streetNumber(placeholder="Enter your street number") }}
+            </div>
+            <div class="input-box">
+              <span class="details">Province</span>
+              {{ addressForm.province(class="form-control", placeholder="Enter your province", onchange="updateCities(this.value)") }}
+            </div>
+            <div class="input-box">
+              <span class="details">City</span>
+              {{ addressForm.city(class="form-control", placeholder="Enter your city") }}
+            </div>
+            <div class="input-box">
+              <span class="details">Postal Code</span>
+              {{ addressForm.postalCode(placeholder="Enter your postal code") }}
+            </div>
+        </div>
+
+        <div class="button" onclick="submitForm('address_form')">
+          <input type="submit" value="Save Address">
+        </div>
+
+      </form>  
+    </div>
+  </div>
+</body>
+</html>
+
+<script src="{{ url_for('static', filename='js/citymap.js') }}"></script>
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+}
+body{
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(135deg, #C8081D, #30507D);
+}
+.container {
+  max-width: 700px;
+  width: 100%;
+  background-color: #fff;
+  padding: 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  margin: 0 auto; /* Add this line to center the container horizontally */
+}
+.container .title{
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.container .title::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 160px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #C8081D, #30507D);
+}
+.container .smalltitle{
+    font-size: 20px;
+    font-weight: 500;
+    color: #545a5e;
+    position: relative;
+    margin-top: 15px;
+    margin-bottom: 0px;
+  }
+.container .smalltitle::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 30px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, #C8081D, #30507D);
+  }
+  
+.content .user-details{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+}
+ .user-details .input-box{
+  margin-bottom: 12px;
+  width: calc(100% / 2 - 20px);
+}
+ .input-box span.details{
+  display: block;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+.user-details .input-box input{
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .input-box input:focus,
+.user-details .input-box input:valid{
+  border-color: #30507D; 
+}
+ 
+  .category{
+   display: flex;
+   width: 80%;
+   margin: 14px 0 ;
+   justify-content: space-between;
+ }
+  .category label{
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+ }
+  .category label .dot{
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #d9d9d9;
+  border: 5px solid transparent;
+  transition: all 0.3s ease;
+}
+
+  input[type="radio"]{
+   display: none;
+ }
+.button{
+   height: 45px;
+   width: 645px;
+   margin: 0px;
+ }
+.button input{
+   height: 100%;
+   width: 100%;
+   border-radius: 5px;
+   border: none;
+   color: #fff;
+   font-size: 18px;
+   font-weight: 500;
+   letter-spacing: 1px;
+   cursor: pointer;
+   transition: all 0.3s ease;
+   background: linear-gradient(135deg, #C8081D, #30507D);
+ }
+ .button input:hover{
+  /* transform: scale(0.99); */
+  background: linear-gradient(-135deg, #C8081D, #30507D);
+  }
+ @media(max-width: 584px){
+ .container{
+  max-width: 100%;
+}
+ .user-details .input-box{
+    margin-bottom: 15px;
+    width: 100%;
+  }
+   .category{
+    width: 100%;
+  }
+  .content  .user-details{
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .user-details::-webkit-scrollbar{
+    width: 5px;
+  }
+  }
+  @media(max-width: 459px){
+  .container .content .category{
+    flex-direction: column;
+  }
+}
+</style>
+
+{% endblock %}

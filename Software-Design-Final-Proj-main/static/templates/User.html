@@ -1,0 +1,463 @@
+{% extends 'base.html'%}
+{% block title %}
+User Profile
+{% endblock %}
+
+{% block content%}
+<html>
+<!doctype html>
+<html lang="en">
+   <head>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" />
+   </head>
+<div class="container emp-profile">
+    <form method="post">
+        <div class="row" style="height: 130px;" >
+            <div class="col-md-4">
+                <div class="profile-img">
+                    <img src="{{ url_for('static', filename='images/UserIcon.png')}}" alt=""/>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="profile-head">
+                            <h5>
+                                {{user.name}}
+                            </h5>
+                            <h6>
+                                {{user.email}}
+                            </h6>
+                            <!-- <p class="proile-rating">RANKINGS : <span>8/10</span></p> -->
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Car Rented</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <button type="button" class="profile-edit-btn" name="btnAddMore" data-toggle="modal" data-target="#editProfileModal" value="Edit Profile">Edit Profile</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4">
+                <div class="profile-work" style="text-align: center; align-items: center; margin-top: 5%;">
+                    <p style="font-size: large;"  >Welcome User!</p>
+                    <!-- <button type="button" class="profile-edit-btn" name="btnAddMore" style="font-size: smaller;" value="Employee verification" data-toggle="modal" data-target="#VerificationModal" >Employee verification</button> -->
+                    <!-- <a href="">Website Link</a><br/>
+                    <a href="">Bootsnipp Profile</a><br/>
+                    <a href="">Bootply Profile</a>
+                    <p>SKILLS</p>
+                    <a href="">Web Designer</a><br/>
+                    <a href="">Web Developer</a><br/>
+                    <a href="">WordPress</a><br/>
+                    <a href="">WooCommerce</a><br/>
+                    <a href="">PHP, .Net</a><br/> -->
+                </div>
+            </div>
+            <div class="col-md-8">
+                <div class="tab-content profile-tab" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Drivers License</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.driverLicense}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Name</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.name}}</p>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>Email</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.email}}</p>
+                                    </div>
+                                </div>
+                                <div class="row" style="margin-bottom: 0px; padding-bottom: 0%; bottom: 0;">
+                                    <div class="col-md-6">
+                                        <label>Phone</label>
+                                    </div>
+                                    {% if phoneNumbers %}
+                                    <div class="col-md-6">
+                                        {% for phone in phoneNumbers %}
+                                            
+                                                <div class="row">
+                                                <p style="padding-left: 12px;"> {{ phone.phoneNumbers }}
+                                                <form  style="padding-left: 12px;" id="RemoveNoForm{{ phone.phoneNumberID }}" method="POST" action="{{ url_for('deletePhone', phone_id=phone.phoneNumberID) }}" class="form-register">
+                                                    <button type="submit" class="btn btn-outline-danger rounded-circle" style="font-size: smaller; color: #6c757d; margin-left:12px; padding:0px:" value="Remove" >
+                                                        <i class="fa fa-trash" aria-hidden="true" style = "color: red;"></i>
+                                                    </button>
+                                                </form>
+                                                </p>
+                                                </div>
+                                            
+                                        {% endfor %}
+                                    </div>
+                                    {% else %}
+                                        <div class="col-md-6">
+                                            <p>No phone numbers</p>
+                                        </div>
+                                    {% endif %}
+                                    </div>
+                                <div class="row" style="top: 0; padding: 0; margin-bottom: 20px; margin-top: 0; ">
+                                <div class="col-md-6"></div>
+                                <div class="col-md-3">
+                                <button type="button"  name="btnAddMore" data-toggle="modal" data-target="#AddphoneNumber" style="font-size: 15px; font-weight: bold; background-color: transparent; color: #0062cc; border: none; text-decoration:underline; " value="add">Add New Number</button>
+                                </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label>User Type</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <p>{{user.type}}</p>
+                                    </div>
+                                </div>
+                                {% if user.__class__.__name__ == 'Employee' %}
+                                <div class="row" >
+                                    <div class="col-md-6">
+                                        <label>Location Assigned</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        {% if EmployeeLocation %}
+                                            <p> {{ EmployeeLocation.fullAddressName }}</p>
+                                        {% else %}
+                                            <p> Not yet Assigned to any location please edit...</p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                {% endif %}
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        <table class="table table-sm">
+                            <thead class="small text-uppercase bg-body text-muted">
+                                <tr>
+                                    <th>Rent ID</th>
+                                    <th>Car Rented</th>
+                                    <th>Total Price</th>
+                                    <th>City Rented</th>
+                                    <th>Options</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for rentData in rents %}
+                                    <tr class="align-middle">
+                                        <td># {{ rentData.rent.rentID }}</td>
+                                        <td>{{ rentData.car.carMake }} {{ rentData.car.carModel }}</td>
+                                        <td>₱ {{ rentData.totalPrice }}</td>
+                                        <td>{{ rentData.pickupAddress.city }}</td>
+                                        <td>
+                                            <a type="button" class="btn btn-outline-info btn-circle" data-toggle="modal" data-target="#RentInfo_{{ rentData.rent.rentID}}" ><i class="fa fa-info-circle"></i> Info</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>           
+</div>
+<script src="https://kit.fontawesome.com/your-kit-id.js" crossorigin="anonymous"></script>
+
+<!-- Register Modal -->
+<div class="modal fade" id="editProfileModal" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Edit Profile</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editProfileForm" method="POST" action="{{ url_for('update_profile', user_id=user.driverLicense)}}" class="form-register">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" value="{{ user.name }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+                    </div>
+                    {% if user.__class__.__name__ == 'Employee' %}
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <select class="form-control" id="location" name="location">
+                            {% for location_id, location_name in location_choices %}
+                                <option value="{{ location_id }}">{{ location_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    {% endif %}
+                    <!-- Add more form fields here -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm('editProfileForm')" >Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Register Modal Phone Number -->
+<div class="modal fade" id="AddphoneNumber" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Add Phone Number</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="AddPhoneNumberForm" method="POST" action="{{ url_for('registerPhone', user_id=user.driverLicense)}}" class="form-register">
+                    <div class="form-group">
+                        <label for="name">Phone Number</label>
+                        <input type="text" class="form-control" id="PhoneNumber" name="PhoneNumber" placeholder="Enter Phone Number...">
+                    </div>
+                    <!-- Add more form fields here -->
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" onclick="submitForm('AddPhoneNumberForm')">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- more info Modal -->
+{% for rentData in rents %}
+<div class="modal fade bd-example-modal-lg" id="RentInfo_{{ rentData.rent.rentID }}" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl" style="max-width: 70vw;">
+        <div class="modal-content">
+            <div class="modal-header bg-dark">
+                <h5 class="modal-title" id="staticBackdropLabel">Rent Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Rent ID: # {{ rentData.rent.rentID }}</th>
+                            <th>Car Model / Make: {{ rentData.car.carMake }} {{ rentData.car.carModel }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Total Price for Rent: ₱  {{ rentData.totalPrice }}</td>
+                            <td>Car Price:₱  {{ rentData.car.class.price }} /day</td>
+                        </tr>
+                        <tr>
+                            <td>Date Rented: {{ rentData.rent.dateRented }}</td>
+                            <td>car licensePlate: {{ rentData.car.licensePlate }}</td>
+                        </tr>
+                        <tr>
+                            <td>Drop-off date: {{ rentData.rent.dateReturned }}</td>
+                            <td>Address Rented: {{ rentData.pickupAddress.fullAddressName }}</td>
+                        </tr>
+                        <tr>
+                            <td>odometer Rented and Returned:  {{ rentData.rent.odometerRented }} / {{ rentData.rent.odometerReturned }}</td>
+                            <td>Address Returned: {{ rentData.dropoffAddress.fullAddressName }}</td>
+                        </tr>
+                        <tr>
+                            <td>gas Volume: {{ rentData.rent.gasVolume }}</td>
+                            {% if rentData.promo.discountRate %}
+                            <td>Promo For the car class:   {{ rentData.promo.discountRate * 100}}  %</td>
+                            {% else %}
+                            <td>Promo For the car class:   No Promo Given</td>
+                        {% endif %}
+                        </tr>       
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+<style>
+
+    body{
+    background: -webkit-linear-gradient(left, #a72828, #c56d5d);
+    }
+    .emp-profile{
+    padding: 3%;
+    margin-top: 3%;
+    margin-bottom: 3%;
+    border-radius: 0.5rem;
+    min-width: 1100px;
+    background: #fff;
+    }
+    .profile-img{
+    text-align: center;
+    margin-bottom: 0;
+    }
+    .profile-img img{
+    width: auto;
+    height: 150px; /* Maintain aspect ratio */
+    padding-bottom: 0;
+    }
+    .profile-img .file {
+    position: relative;
+    overflow: hidden;
+    margin-top: -20%;
+    width: 70%;
+    border: none;
+    border-radius: 0;
+    font-size: 15px;
+    background: #212529b8;
+    }
+    .profile-img .file input {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 0;
+    }
+    .profile-head h5{
+    color: #333;
+    }
+    .profile-head h6{
+    color: #0062cc;
+    }
+    .profile-edit-btn{
+    border: 1;
+    text-align: center;
+    border-radius: 1.5rem;
+    width: 100%;
+    min-width: 80px;
+    max-width: max-content;
+    padding: 2%;
+    font-weight: 600;
+    color: #6c757d;
+    cursor: pointer;
+    }
+    /* .proile-rating{
+    font-size: 12px;
+    color: #818182;
+    margin-top: 5%;
+    }
+    .proile-rating span{
+    color: #495057;
+    font-size: 15px;
+    font-weight: 600;
+    } */
+    .profile-head .nav-tabs{
+    margin-bottom:5%;
+    }
+    .profile-head .nav-tabs .nav-link{
+    font-weight:600;
+    border: none;
+    }
+    .profile-head .nav-tabs .nav-link.active{
+    border: none;
+    border-bottom:2px solid #0062cc;
+    }
+    .profile-work{
+    padding: 14%;
+    margin-top: -15%;
+    }
+    .profile-work p{
+    font-size: 12px;
+    color: #818182;
+    font-weight: 600;
+    margin-top: 10%;
+    }
+    .profile-work a{
+    text-decoration: none;
+    color: #495057;
+    font-weight: 600;
+    font-size: 14px;
+    }
+    .profile-work ul{
+    list-style: none;
+    }
+    .nav-tabs {
+        margin-bottom: 0; /* Remove bottom margin from navigation tabs */
+    }
+    .tab-content {
+        padding: 0; /* Remove padding from tab content */
+    }
+    .tab-pane {
+        padding: 0; /* Remove padding from individual tab panes */
+    }
+
+    .profile-tab .row {
+        margin-bottom: 5px; /* Adjust the margin between rows */
+    }
+    .profile-tab label{
+    font-weight: 600;
+    }
+    .profile-tab p{
+    font-weight: 600;
+    color: #0062cc;
+    }
+
+    /* Modal Content */
+    .modal-content {
+    border-radius: 10px; /* Add curved corners to the modal */
+    }
+
+    /* Modal Header */
+    .modal-header {
+    background-color: #00095f; /* Change the background color */
+    color: #fff; /* Change the text color */
+    border-top-left-radius: 10px; /* Add curved corners to the top left of the header */
+    border-top-right-radius: 10px; /* Add curved corners to the top right of the header */
+    border-bottom: 1px solid #dee2e6; /* Add a border at the bottom */
+    }
+
+    /* Modal Title */
+    .modal-title {
+    font-size: 1.25rem; /* Change the font size */
+    }
+
+    /* Modal Body */
+    .modal-body {
+    padding: 1.25rem; /* Add padding to the body */
+    }
+
+    /* Modal Footer */
+    .modal-footer {
+    background-color: #f7f7f7; /* Change the background color */
+    border-bottom-left-radius: 10px; /* Add curved corners to the bottom left of the footer */
+    border-bottom-right-radius: 10px; /* Add curved corners to the bottom right of the footer */
+    border-top: 1px solid #dee2e6; /* Add a border at the top */
+    padding: 1.25rem; /* Add padding to the footer */
+    }
+
+    /* Close Button */
+    .close {
+    color: #fff; /* Change the color of the close button */
+    opacity: 1; /* Ensure the close button is fully visible */
+    }
+
+    /* Override Modal Width */
+    .modal-dialog {
+    max-width: 500px; /* Adjust the maximum width of the modal */
+}
+</style>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</html>
+{% endblock %}

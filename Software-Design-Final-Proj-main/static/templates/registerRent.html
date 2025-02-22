@@ -1,0 +1,314 @@
+{% extends 'base.html'%}
+{% block title %}
+Register Rent
+{% endblock %}
+
+{% block content%}
+
+<html lang="en" dir="ltr">
+<body>
+  <div class="container">
+    <div class="title">
+      Rent Registration
+    </div>
+    <div class="content">
+      <form method="POST" id="rent_form">
+        {{ rentForm.hidden_tag() }}
+        <!-- Rent Form-->
+        <div class="smalltitle">
+            User Information
+        </div>
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Full Name</span>
+                <input type="text" style="font-weight: 600; border-color: #30507D;" placeholder="{{ current_user.name }}" readonly>
+            </div>
+            <div class="input-box">
+                <span class="details">Driver's License</span>
+                <input type="text" style="font-weight: 600; border-color: #30507D;" placeholder="{{ current_user.driverLicense }}" readonly>
+            </div>
+        </div>
+        
+        <div class="smalltitle">
+          Car Information
+        </div>
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Car Name</span>
+                <input type="text" style="border-color: #30507D;" value="{{ car.carName }}" readonly>
+            </div>
+            <div class="input-box">
+                <span class="details">License Plate</span>
+                <input type="text" style="border-color: #30507D;" value="{{ car.licensePlate }}" readonly>
+            </div>
+            <div class="input-box">
+                <span class="details">Requested Car Class</span>
+                {{ rentForm.requestedClass(placeholder="Choose requested car class:", class="form-control", style="border-color: #30507D;") }}
+            </div>
+            <div class="input-box">
+                <span class="details">Received Car Class</span>
+                {{ rentForm.receivedClass(placeholder="read only", class="form-control", style="border-color: #30507D;") }}
+            </div>
+            <div class="input-box">
+                <span class="details">Odometer Rented</span>
+                {{ rentForm.odometerRented(class="form-control", style="border-color: #30507D;", readonly="readonly") }}
+            </div>
+            <div class="input-box">
+                <span class="details">Odometer Returned</span>
+                {{ rentForm.odometerReturned(placeholder="Odometer reading (km) returned:") }}
+            </div>
+            <div class="input-box">
+                <span class="details">Gas Volume</span>
+                {{ rentForm.gasVolume(placeholder="Gas volume returned:", class="form-control") }}
+            </div>
+        </div>
+        <div class="smalltitle">
+            Address Information
+        </div>
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Pick-up Location</span>
+                {{ rentForm.locationRentedID(placeholder="Choose requested car class:", class="form-control", style="border-color: #30507D;") }}
+            </div>
+            <div class="input-box">
+                <span class="details">Drop-off Location</span>
+                {{ rentForm.locationDropOffID(placeholder="Choose requested car class:", class="form-control", style="border-color: #30507D;") }}
+            </div>
+        </div>
+        <div class="smalltitle">
+            Date Information
+        </div>
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Date Rented</span>
+                {{ rentForm.dateRented(id="dateRented", placeholder="Indicate date rented:") }}
+            </div>
+            <div class="input-box">
+                <span class="details">Date Returned</span>
+                {{ rentForm.dateReturned(placeholder="Indicate date rented:") }}
+            </div>
+        </div>
+        <div class="smalltitle">
+            Promotional
+        </div>
+        <div class="user-details">
+            <div class="input-box">
+                <span class="details">Available Promos</span>
+                {{ rentForm.promotionalID(placeholder="Choose promo:", class="form-control") }}
+            </div>
+        </div>
+        
+        <div class="button" onclick="submitForm('rent_form')">
+          <input type="submit" value="Register">
+      </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Poppins',sans-serif;
+}
+body{
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background: linear-gradient(135deg, #C8081D, #30507D);
+}
+.container{
+  max-width: 800px;
+  width: 100%;
+  background-color: #fff;
+  padding: 25px 0px 25px 30px;
+  border-radius: 5px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+}
+
+.container .content {
+    max-height: 700px;
+    width: 760px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding-right: 30px; /* Add this line */
+}
+
+.container .title{
+  font-size: 25px;
+  font-weight: 500;
+  position: relative;
+}
+.container .title::before{
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 220px;
+  border-radius: 5px;
+  background: linear-gradient(135deg, #C8081D, #30507D);
+}
+.container .smalltitle{
+    font-size: 20px;
+    font-weight: 500;
+    color: #545a5e;
+    position: relative;
+    margin-top: 15px;
+    margin-bottom: 0px;
+  }
+.container .smalltitle::before{
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 2px;
+    width: 30px;
+    border-radius: 3px;
+    background: linear-gradient(135deg, #C8081D, #30507D);
+  }
+  
+.content .user-details{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin: 20px 0 12px 0;
+}
+ .user-details .input-box{
+  margin-bottom: 12px;
+  width: calc(100% / 2 - 20px);
+}
+ .input-box span.details{
+  display: block;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+.user-details .input-box input{
+  height: 45px;
+  width: 100%;
+  outline: none;
+  font-size: 16px;
+  border-radius: 5px;
+  padding-left: 15px;
+  border: 1px solid #ccc;
+  border-bottom-width: 2px;
+  transition: all 0.3s ease;
+}
+.user-details .input-box input:focus,
+.user-details .input-box input:valid{
+  border-color: #30507D; 
+}
+ 
+  .category{
+   display: flex;
+   width: 80%;
+   margin: 14px 0 ;
+   justify-content: space-between;
+ }
+  .category label{
+   display: flex;
+   align-items: center;
+   cursor: pointer;
+ }
+  .category label .dot{
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  margin-right: 10px;
+  background: #d9d9d9;
+  border: 5px solid transparent;
+  transition: all 0.3s ease;
+}
+
+  input[type="radio"]{
+   display: none;
+ }
+.button{
+   height: 45px;
+   width: 710px;
+   margin: 0px;
+ }
+.button input{
+   height: 100%;
+   width: 100%;
+   border-radius: 5px;
+   border: none;
+   color: #fff;
+   font-size: 18px;
+   font-weight: 500;
+   letter-spacing: 1px;
+   cursor: pointer;
+   transition: all 0.3s ease;
+   background: linear-gradient(135deg, #C8081D, #30507D);
+ }
+ .button input:hover{
+  /* transform: scale(0.99); */
+  background: linear-gradient(-135deg, #C8081D, #30507D);
+  }
+ @media(max-width: 584px){
+ .container{
+  max-width: 100%;
+}
+ .user-details .input-box{
+    margin-bottom: 15px;
+    width: 100%;
+  }
+   .category{
+    width: 100%;
+  }
+  .content  .user-details{
+    max-height: 300px;
+    overflow-y: scroll;
+  }
+  .user-details::-webkit-scrollbar{
+    width: 5px;
+  }
+  }
+  @media(max-width: 459px){
+  .container .content .category{
+    flex-direction: column;
+  }
+}
+</style>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+      const dateRentedInput = document.getElementById("dateRented");
+      const promoSelect = document.getElementById("promotionalID");
+
+      dateRentedInput.addEventListener("change", function() {
+          const dateRented = dateRentedInput.value;
+
+          // Make an AJAX request to the server
+          fetch(`/get_promos?date_rented=${dateRented}`)
+              .then(response => response.json())
+              .then(data => {
+                  // Clear existing options
+                  promoSelect.innerHTML = "";
+
+                  // Update the choices for the Promo field
+                  data.forEach(promo => {
+                      const option = document.createElement("option");
+                      option.value = promo.promotionalID;
+                      option.textContent = `${promo.promoName}: ${promo.discountRate * 100}% off`;
+                      promoSelect.appendChild(option);
+                  });
+
+                  // Add a special case if no promos available
+                  if (data.length === 1 && data[0].promotionalID === null) {
+                    const option = document.createElement("option");
+                    option.value = ''; // Change this line
+                    option.textContent = "No promo available";
+                    promoSelect.appendChild(option);
+                  }
+              })
+              .catch(error => console.error('Error:', error));
+      });
+  });
+</script>
+
+
+{% endblock %}
